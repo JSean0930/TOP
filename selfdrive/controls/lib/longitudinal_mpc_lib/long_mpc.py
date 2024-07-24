@@ -72,7 +72,7 @@ def get_jerk_factor(personality=log.LongitudinalPersonality.standard):
 
 def get_T_FOLLOW(personality=log.LongitudinalPersonality.standard):
   if personality==log.LongitudinalPersonality.relaxed:
-    return 0.95
+    return 0.9
   elif personality==log.LongitudinalPersonality.standard:
     return 1.5
   elif personality==log.LongitudinalPersonality.aggressive:
@@ -99,11 +99,11 @@ def get_dynamic_follow(v_ego, personality=log.LongitudinalPersonality.standard):
 
 def get_STOP_DISTANCE(personality=log.LongitudinalPersonality.standard):
   if personality==log.LongitudinalPersonality.relaxed:
-    return 5.0
+    return 4.0
   elif personality==log.LongitudinalPersonality.standard:
-    return 5.0
+    return 4.0
   elif personality==log.LongitudinalPersonality.aggressive:
-    return 5.0
+    return 4.0
   else:
     raise NotImplementedError("Longitudinal personality not supported")
 
@@ -404,7 +404,7 @@ class LongitudinalMpc:
     lead_xv_1 = self.process_lead(radarstate.leadTwo)
     lead = radarstate.leadOne
 
-    self.smoother_braking = True if self.mode == 'acc' and np.any(v_ego < 25) and np.any(lead_xv_0[:,0] < 45) and not np.any(lead.dRel < (v_ego - 1) * t_follow) else False
+    self.smoother_braking = True if self.mode == 'acc' and np.any(v_ego < 15) and np.any(lead_xv_0[:,0] < 45) and not np.any(lead.dRel < (v_ego - 1) * t_follow) else False
     if self.smoother_braking:
       distance_factor = np.maximum(1, lead_xv_0[:,0] - (lead_xv_0[:,1] * t_follow))
       self.braking_offset = np.clip((v_ego - lead_xv_0[:,1]) - COMFORT_BRAKE, 1, distance_factor)
