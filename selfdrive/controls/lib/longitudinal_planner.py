@@ -25,7 +25,7 @@ from openpilot.selfdrive.controls.vtsc import vtsc
 
 LON_MPC_STEP = 0.2  # first step is 0.2s
 A_CRUISE_MIN = -1.2
-A_CRUISE_MAX_VALS = [1.6, 1.2, 0.8, 0.6]
+A_CRUISE_MAX_VALS = [1.2, 1.0, 0.8, 0.6]
 A_CRUISE_MAX_BP = [0., 10.0, 25., 40.]
 A_CRUISE_MIN_VALS =    [-1.02,  -0.25, -0.001, -0.01, -0.15, -0.25, -0.33, -0.42, -0.65, -0.65]
 A_CRUISE_MIN_BP =      [ 0.,    .01,   .02,    .3,     5.,    8.,    11.,   16.,   28.,   42.]
@@ -39,7 +39,7 @@ A_CRUISE_MAX_VALS_TOYOTA =   [2.0, 1.7, 1.32, 1.22, 1.02, .87, .73, .58, .38, .2
 A_CRUISE_MAX_BP_TOYOTA =     [0.,  1.,  3.,   6.,   8.,    11., 15., 20., 25., 30., 55.]
 
 # Lookup table for turns
-_A_TOTAL_MAX_V = [1.7, 3.2]
+_A_TOTAL_MAX_V = [1.8, 3.3]
 _A_TOTAL_MAX_BP = [20., 40.]
 
 
