@@ -46,12 +46,12 @@ class CarInterface(CarInterfaceBase):
       ret.safetyConfigs[0].safetyParam |= Panda.FLAG_TOYOTA_LTA
 
       # LTA control can be more delayed and winds up more often
-      ret.steerActuatorDelay = 0.18
+      ret.steerActuatorDelay = 0.21
       ret.steerLimitTimer = 0.8
     else:
       CarInterfaceBase.configure_torque_tune(candidate, ret.lateralTuning)
 
-      ret.steerActuatorDelay = 0.12  # Default delay, Prius has larger delay
+      ret.steerActuatorDelay = 0.21  # Default delay, Prius has larger delay
       ret.steerLimitTimer = 0.4
 
     ret.stoppingControl = False  # Toyota starts braking more when it thinks you want to stop
@@ -115,7 +115,7 @@ class CarInterface(CarInterfaceBase):
     if ret.flags & ToyotaFlags.SNG_WITHOUT_DSU:
       stop_and_go = stop_and_go or bool(ret.flags & ToyotaFlags.SMART_DSU.value) or (ret.enableDsu and not docs)
 
-    ret.centerToFront = ret.wheelbase * 0.44
+    ret.centerToFront = ret.wheelbase * 0.4
 
     # TODO: Some TSS-P platforms have BSM, but are flipped based on region or driving direction.
     # Detect flipped signals and enable for C-HR and others
@@ -157,14 +157,14 @@ class CarInterface(CarInterfaceBase):
     ret.minEnableSpeed = -1. if stop_and_go else MIN_ACC_SPEED
 
     # on stock Toyota this is -2.5
-    ret.stopAccel = -2.5
+    ret.stopAccel = -0.6
 
     tune = ret.longitudinalTuning
     tune.deadzoneBP = [0., 5.,  6.,    7.,    20., 30]
     tune.deadzoneV = [0.,  0.,  0.001, 0.003, .1, .15]
     ret.stoppingDecelRate = 0.25  # This is okay for TSS-P
     if candidate in TSS2_CAR:
-      ret.vEgoStopping = 0.25
+      ret.vEgoStopping = 0.11
       ret.vEgoStarting = 0.25
       ret.stoppingDecelRate = 0.05  # reach stopping target smoothly
     tune.kpV = [0.88]
