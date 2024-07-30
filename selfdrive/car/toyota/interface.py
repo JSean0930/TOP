@@ -25,10 +25,10 @@ class CarInterface(CarInterfaceBase):
 
   @staticmethod
   def get_pid_accel_limits(CP, current_speed, cruise_speed):
-    if CP.carFingerprint in TSS2_CAR and Params().get_bool("Marc_Dynamic_Follow"):
+   # if CP.carFingerprint in TSS2_CAR and Params().get_bool("Marc_Dynamic_Follow"):
       # Allow for higher accel from PID controller at low speeds
-      return CarControllerParams.ACCEL_MIN, CarControllerParams.ACCEL_MAX_PLUS
-    else:
+   #   return CarControllerParams.ACCEL_MIN, CarControllerParams.ACCEL_MAX_PLUS
+   # else:
       return CarControllerParams.ACCEL_MIN, CarControllerParams.ACCEL_MAX
 
   @staticmethod
