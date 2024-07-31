@@ -16,9 +16,11 @@ GearShifter = car.CarState.GearShifter
 
 
 class CarInterface(CarInterfaceBase):
+  prev_atl = False
+  
   def __init__(self, CP, CarController, CarState):
     super().__init__(CP, CarController, CarState)
-    self.prev_atl = False
+    #self.prev_atl = False
 
     # init for low speed re-write (dp)
     self.low_cruise_speed = 0.
@@ -56,7 +58,7 @@ class CarInterface(CarInterfaceBase):
 
     ret.stoppingControl = False  # Toyota starts braking more when it thinks you want to stop
 
-    stop_and_go = candidate in TSS2_CAR
+    stop_and_go = False #candidate in TSS2_CAR
 
     # Detect smartDSU, which intercepts ACC_CMD from the DSU (or radar) allowing openpilot to send it
     # 0x2AA is sent by a similar device which intercepts the radar instead of DSU on NO_DSU_CARs
