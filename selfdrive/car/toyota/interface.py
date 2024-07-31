@@ -205,8 +205,6 @@ class CarInterface(CarInterfaceBase):
         else:
           ret.cruiseState.speed = ret.cruiseState.speedCluster = self.low_cruise_speed
         else:
-          ret.cruiseState.speed = ret.cruiseState.speedCluster = 24 * CV.KPH_TO_MS
-        else:
           self.low_cruise_speed = 0.
 
     if self.CP.carFingerprint in (TSS2_CAR - RADAR_ACC_CAR) or (self.CP.flags & ToyotaFlags.SMART_DSU and not self.CP.flags & ToyotaFlags.RADAR_CAN_FILTER):
