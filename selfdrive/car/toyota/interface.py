@@ -16,21 +16,19 @@ GearShifter = car.CarState.GearShifter
 
 
 class CarInterface(CarInterfaceBase):
-  prev_atl = False
-  
   def __init__(self, CP, CarController, CarState):
     super().__init__(CP, CarController, CarState)
-    #self.prev_atl = False
+    self.prev_atl = False
 
     # init for low speed re-write (dp)
     self.low_cruise_speed = 0.
 
   @staticmethod
   def get_pid_accel_limits(CP, current_speed, cruise_speed):
-   # if CP.carFingerprint in TSS2_CAR and Params().get_bool("Marc_Dynamic_Follow"):
+    if CP.carFingerprint in TSS2_CAR and Params().get_bool("Marc_Dynamic_Follow"):
       # Allow for higher accel from PID controller at low speeds
-   #   return CarControllerParams.ACCEL_MIN, CarControllerParams.ACCEL_MAX_PLUS
-   # else:
+      return CarControllerParams.ACCEL_MIN, CarControllerParams.ACCEL_MAX_PLUS
+    else:
       return CarControllerParams.ACCEL_MIN, CarControllerParams.ACCEL_MAX
 
   @staticmethod
@@ -58,7 +56,7 @@ class CarInterface(CarInterfaceBase):
 
     ret.stoppingControl = False  # Toyota starts braking more when it thinks you want to stop
 
-    stop_and_go = False #candidate in TSS2_CAR
+    stop_and_go = candidate in TSS2_CAR
 
     # Detect smartDSU, which intercepts ACC_CMD from the DSU (or radar) allowing openpilot to send it
     # 0x2AA is sent by a similar device which intercepts the radar instead of DSU on NO_DSU_CARs
@@ -150,13 +148,9 @@ class CarInterface(CarInterfaceBase):
     #  - TSS-P DSU-less cars w/ CAN filter installed (no radar parser yet)
     ret.openpilotLongitudinalControl = use_sdsu or ret.enableDsu or candidate in (TSS2_CAR - RADAR_ACC_CAR) or bool(ret.flags & ToyotaFlags.DISABLE_RADAR.value)
     ret.autoResumeSng = ret.openpilotLongitudinalControl and candidate in NO_STOP_TIMER_CAR
-    #ret.enableGasInterceptor = 0x201 in fingerprint[0] and ret.openpilotLongitudinalControl
 
     if not ret.openpilotLongitudinalControl:
       ret.safetyConfigs[0].safetyParam |= Panda.FLAG_TOYOTA_STOCK_LONGITUDINAL
-
-    if ret.enableGasInterceptor:
-      ret.safetyConfigs[0].safetyParam |= Panda.FLAG_TOYOTA_GAS_INTERCEPTOR
 
     # min speed to enable ACC. if car can do stop and go, then set enabling speed
     # to a negative value, so it won't matter.
