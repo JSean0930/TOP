@@ -56,7 +56,7 @@ class CarInterface(CarInterfaceBase):
 
     ret.stoppingControl = False  # Toyota starts braking more when it thinks you want to stop
 
-    stop_and_go = candidate in TSS2_CAR
+    stop_and_go = False #candidate in TSS2_CAR
 
     # Detect smartDSU, which intercepts ACC_CMD from the DSU (or radar) allowing openpilot to send it
     # 0x2AA is sent by a similar device which intercepts the radar instead of DSU on NO_DSU_CARs
