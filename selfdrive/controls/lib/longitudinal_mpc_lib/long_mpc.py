@@ -99,11 +99,11 @@ def get_dynamic_follow(v_ego, personality=log.LongitudinalPersonality.standard):
 
 def get_STOP_DISTANCE(personality=log.LongitudinalPersonality.standard):
   if personality==log.LongitudinalPersonality.relaxed:
-    return 5.0
+    return 7.0
   elif personality==log.LongitudinalPersonality.standard:
-    return 5.0
+    return 7.0
   elif personality==log.LongitudinalPersonality.aggressive:
-    return 5.0
+    return 7.0
   else:
     raise NotImplementedError("Longitudinal personality not supported")
 
