@@ -157,7 +157,7 @@ class CarInterface(CarInterfaceBase):
     ret.minEnableSpeed = -1. if stop_and_go else MIN_ACC_SPEED
 
     # on stock Toyota this is -2.5
-    ret.stopAccel = -0.6
+    ret.stopAccel = -0.4
 
     tune = ret.longitudinalTuning
     tune.deadzoneBP = [0., 5.,  6.,    7.,    20., 30]
