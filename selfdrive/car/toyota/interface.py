@@ -157,7 +157,7 @@ class CarInterface(CarInterfaceBase):
     ret.minEnableSpeed = -1. if stop_and_go else MIN_ACC_SPEED
 
     # on stock Toyota this is -2.5
-    ret.stopAccel = -0.4
+    ret.stopAccel = -2.5
 
     tune = ret.longitudinalTuning
     tune.deadzoneBP = [0., 5.,  6.,    7.,    20., 30]
@@ -166,7 +166,7 @@ class CarInterface(CarInterfaceBase):
     if candidate in TSS2_CAR:
       ret.vEgoStopping = 0.1
       ret.vEgoStarting = 0.1
-      ret.stoppingDecelRate = 0.04  # reach stopping target smoothly
+      ret.stoppingDecelRate = 0.3  # reach stopping target smoothly
     #tune.kpV = [0.88]
     #tune.kiBP = [0., 32.]
     #tune.kiV = [.4, .2]
