@@ -395,8 +395,8 @@ class LongitudinalMpc:
     v_ego = self.x0[1]
     t_follow = get_T_FOLLOW(personality) if not dynamic_follow else get_dynamic_follow(v_ego, personality)
     stop_distance = get_STOP_DISTANCE(personality)
-    #if not (self.CP.flags & ToyotaFlags.SMART_DSU) or dynamic_follow:
-      #stop_distance += 1.5
+    if not (self.CP.flags & ToyotaFlags.SMART_DSU) or dynamic_follow:
+      stop_distance += 1.5
 
     self.status = radarstate.leadOne.status or radarstate.leadTwo.status
 
