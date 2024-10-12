@@ -16,8 +16,8 @@ PEDAL_TRANSITION = 10. * CV.MPH_TO_MS
 
 
 class CarControllerParams:
-  ACCEL_MAX = 1.55  # m/s2, lower than allowed 2.0 m/s2 for tuning reasons
-  ACCEL_MAX_PLUS = 1.55
+  ACCEL_MAX = 1.6  # m/s2, lower than allowed 2.0 m/s2 for tuning reasons
+  ACCEL_MAX_PLUS = 1.6
   ACCEL_MIN = -2.0  # m/s2 -2.1
 
   STEER_STEP = 1
@@ -166,7 +166,7 @@ class CAR(Platforms):
       ToyotaCarDocs("Toyota Corolla Cross Hybrid (Non-US only) 2020-22", min_enable_speed=7.5),
       ToyotaCarDocs("Lexus UX Hybrid 2019-23"),
     ],
-    CarSpecs(mass=3396. * CV.LB_TO_KG, wheelbase=2.64, steerRatio=13.7, tireStiffnessFactor=0.8),
+    CarSpecs(mass=3396. * CV.LB_TO_KG, wheelbase=2.64, steerRatio=13.7, tireStiffnessFactor=0.4),
   )
   TOYOTA_HIGHLANDER = PlatformConfig(
     [
