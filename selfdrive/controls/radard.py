@@ -66,7 +66,6 @@ class Track:
     self.aLead = 0.0
     self.vLead_last = v_lead
     self.radar_reaction_factor = Params().get_float("RadarReactionFactor") * 0.01
-
 #============================
 
   
@@ -91,11 +90,15 @@ class Track:
     # computed velocity and accelerations
     if self.cnt > 0:
       self.kf.update(self.vLead)
+
+      
 #============================
       alpha = 0.15
       dv = 0.0 if abs(self.vLead) < 0.5 else self.vLead - self.vLead_last
       self.aLead = self.aLead * (1 - alpha) + dv / DT_MDL * alpha
 #============================
+
+    
     self.vLeadK = float(self.kf.x[SPEED][0])
     self.aLeadK = float(self.kf.x[ACCEL][0])
 
@@ -117,7 +120,6 @@ class Track:
 
     self.cnt += 1
     self.vLead_last = self.vLead
-
  #============================ 
 
   def get_key_for_cluster(self):
@@ -178,12 +180,23 @@ def match_vision_to_track(v_ego: float, lead: capnp._DynamicStructReader, tracks
 
   # if no 'sane' match is found return -1
   # stationary radar points can be false positives
-  dist_sane = abs(track.dRel - offset_vision_dist) < max([(offset_vision_dist)*.25, 5.0])
-  vel_sane = (abs(track.vRel + v_ego - lead.v[0]) < 10) or (v_ego + track.vRel > 3)
+  ##dist_sane = abs(track.dRel - offset_vision_dist) < max([(offset_vision_dist)*.25, 5.0])
+  ##vel_sane = (abs(track.vRel + v_ego - lead.v[0]) < 10) or (v_ego + track.vRel > 3)
+  ##if dist_sane and vel_sane:
+    ##return track
+  ##else:
+    ##return None
+
+
+#============================
+  vel_tolerance = 25.0 if lead.prob > 0.99 else 10.0
+  dist_sane = abs(track.dRel - offset_vision_dist) < max([(offset_vision_dist)*.35, 5.0])
+  vel_sane = (abs(track.vRel + v_ego - lead.v[0]) < vel_tolerance) or (v_ego + track.vRel > 3)
   if dist_sane and vel_sane:
     return track
   else:
     return None
+#============================
 
 
 def get_RadarState_from_vision(lead_msg: capnp._DynamicStructReader, v_ego: float, model_v_ego: float):
