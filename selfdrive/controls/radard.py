@@ -8,7 +8,7 @@ import capnp
 from cereal import messaging, log, car
 from openpilot.common.numpy_fast import interp
 from openpilot.common.params import Params
-from openpilot.common.realtime import DT_CTRL, Ratekeeper, Priority, config_realtime_process
+from openpilot.common.realtime import DT_CTRL, Ratekeeper, Priority, config_realtime_process, DT_MDL
 from openpilot.common.swaglog import cloudlog
 
 from openpilot.common.simple_kalman import KF1D
@@ -59,7 +59,28 @@ class Track:
     self.K_K = kalman_params.K
     self.kf = KF1D([[v_lead], [0.0]], self.K_A, self.K_C, self.K_K)
 
+
+#===========================
+    self.dRel = 0.0
+    self.vRel = 0.0
+    self.aLead = 0.0
+    self.vLead_last = v_lead
+    self.radar_reaction_factor = Params().get_float("RadarReactionFactor") * 0.01
+
+#============================
+
+  
   def update(self, d_rel: float, y_rel: float, v_rel: float, v_lead: float, measured: float):
+
+#============================
+    if abs(self.dRel - d_rel) > 3.0 or abs(self.vRel - v_rel) > 20.0 * DT_MDL:
+      self.cnt = 0
+      self.kf = KF1D([[v_lead], [0.0]], self.K_A, self.K_C, self.K_K)
+      self.aLead = 0.0
+      self.vLead_last = v_lead
+#============================
+
+    
     # relative values, copy
     self.dRel = d_rel   # LONG_DIST
     self.yRel = y_rel   # -LAT_DIST
@@ -70,7 +91,11 @@ class Track:
     # computed velocity and accelerations
     if self.cnt > 0:
       self.kf.update(self.vLead)
-
+#============================
+      alpha = 0.15
+      dv = 0.0 if abs(self.vLead) < 0.5 else self.vLead - self.vLead_last
+      self.aLead = self.aLead * (1 - alpha) + dv / DT_MDL * alpha
+#============================
     self.vLeadK = float(self.kf.x[SPEED][0])
     self.aLeadK = float(self.kf.x[ACCEL][0])
 
