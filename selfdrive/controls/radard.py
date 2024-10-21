@@ -100,12 +100,25 @@ class Track:
     self.aLeadK = float(self.kf.x[ACCEL][0])
 
     # Learn if constant acceleration
-    if abs(self.aLeadK) < 0.5:
-      self.aLeadTau = _LEAD_ACCEL_TAU
+    ##if abs(self.aLeadK) < 0.5:
+      ##self.aLeadTau = _LEAD_ACCEL_TAU
+    ##else:
+      ##self.aLeadTau *= 0.9
+
+    ##self.cnt += 1
+
+#============================
+    # Learn if constant acceleration
+    #if abs(self.aLeadK) < 0.5:
+    if abs(self.aLead) < 0.5 * self.radar_reaction_factor:
+      self.aLeadTau = _LEAD_ACCEL_TAU * self.radar_reaction_factor
     else:
       self.aLeadTau *= 0.9
 
     self.cnt += 1
+    self.vLead_last = self.vLead
+
+ #============================ 
 
   def get_key_for_cluster(self):
     # Weigh y higher since radar is inaccurate in this dimension
