@@ -24,7 +24,7 @@ from openpilot.selfdrive.controls.vtsc import vtsc
 # }} PFEIFER - VTSC
 
 LON_MPC_STEP = 0.2  # first step is 0.2s
-A_CRUISE_MIN = -1.85     #-1.2 / -1.55 / -1.85
+A_CRUISE_MIN = -1.2     #-1.2 / -1.55 / -1.85
 A_CRUISE_MAX_VALS = [1.28, 0.96, 0.64, 0.48]  ## [1.6, 1.2, 0.8, 0.6]
 A_CRUISE_MAX_BP = [0., 10.0, 25., 40.]
 A_CRUISE_MIN_VALS =   [-0.16, -0.15, -0.14, -0.25, -0.35, -0.45, -0.55, -0.8, -0.8] #[-1.02,  -0.25, -0.001, -0.01, -0.15, -0.25, -0.33, -0.42, -0.65, -0.65]
