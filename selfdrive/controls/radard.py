@@ -61,22 +61,22 @@ class Track:
 
 
 #===========================
-    self.dRel = 0.0
-    self.vRel = 0.0
-    self.aLead = 0.0
-    self.vLead_last = v_lead
-    self.radar_reaction_factor = Params().get_float("RadarReactionFactor") * 0.01
+    #self.dRel = 0.0
+    #self.vRel = 0.0
+    #self.aLead = 0.0
+    #self.vLead_last = v_lead
+    #self.radar_reaction_factor = Params().get_float("RadarReactionFactor") * 0.01
 #============================
 
   
   def update(self, d_rel: float, y_rel: float, v_rel: float, v_lead: float, measured: float):
 
 #============================
-    if abs(self.dRel - d_rel) > 3.0 or abs(self.vRel - v_rel) > 20.0 * DT_MDL:
-      self.cnt = 0
-      self.kf = KF1D([[v_lead], [0.0]], self.K_A, self.K_C, self.K_K)
-      self.aLead = 0.0
-      self.vLead_last = v_lead
+    ##if abs(self.dRel - d_rel) > 3.0 or abs(self.vRel - v_rel) > 20.0 * DT_MDL:
+      ##self.cnt = 0
+      ##self.kf = KF1D([[v_lead], [0.0]], self.K_A, self.K_C, self.K_K)
+      ##self.aLead = 0.0
+      ##self.vLead_last = v_lead
 #============================
 
     
@@ -93,9 +93,9 @@ class Track:
 
       
 #============================
-      alpha = 0.15
-      dv = 0.0 if abs(self.vLead) < 0.5 else self.vLead - self.vLead_last
-      self.aLead = self.aLead * (1 - alpha) + dv / DT_MDL * alpha
+      ##alpha = 0.15
+      ##dv = 0.0 if abs(self.vLead) < 0.5 else self.vLead - self.vLead_last
+      ##self.aLead = self.aLead * (1 - alpha) + dv / DT_MDL * alpha
 #============================
 
     
@@ -103,23 +103,23 @@ class Track:
     self.aLeadK = float(self.kf.x[ACCEL][0])
 
     # Learn if constant acceleration
-    ##if abs(self.aLeadK) < 0.5:
-      ##self.aLeadTau = _LEAD_ACCEL_TAU
-    ##else:
-      ##self.aLeadTau *= 0.9
-
-    ##self.cnt += 1
-
-#============================
-    # Learn if constant acceleration
-    #if abs(self.aLeadK) < 0.5:
-    if abs(self.aLead) < 0.5 * self.radar_reaction_factor:
-      self.aLeadTau = _LEAD_ACCEL_TAU * self.radar_reaction_factor
+    if abs(self.aLeadK) < 0.5:
+      self.aLeadTau = _LEAD_ACCEL_TAU
     else:
       self.aLeadTau *= 0.9
 
     self.cnt += 1
-    self.vLead_last = self.vLead
+
+#============================
+    # Learn if constant acceleration
+    #if abs(self.aLeadK) < 0.5:
+    ##if abs(self.aLead) < 0.5 * self.radar_reaction_factor:
+      ##self.aLeadTau = _LEAD_ACCEL_TAU * self.radar_reaction_factor
+    ##else:
+      ##self.aLeadTau *= 0.9
+
+    ##self.cnt += 1
+    ##self.vLead_last = self.vLead
  #============================ 
 
   def get_key_for_cluster(self):
